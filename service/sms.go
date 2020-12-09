@@ -25,10 +25,11 @@ type SMS struct {
 	SignType    string
 	Vars        string
 	Project     string
-	Signature	string
+	Signature   string
 	Multi       string
 	Client      *client.Client
 }
+const APIGateway = "https://api.mysubmail.com/"
 
 func (this *SMS) AddTo(to string) *SMS {
 	this.To = to
@@ -102,6 +103,7 @@ func (this *SMS) Send() {
 	}
 	this.Client.Do(data)
 }
+
 func (this *SMS) Xsend() {
 
 }
@@ -112,5 +114,5 @@ func (this *SMS) Multixsend() {
 
 }
 func NewSMS(APP_ID, SIGNATURE string) *SMS {
-	return &SMS{Client: client.NewClient(APP_ID, SIGNATURE)}
+	return &SMS{Client: client.NewClient(APP_ID, SIGNATURE,APIGateway +"")}
 }

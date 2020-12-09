@@ -8,7 +8,7 @@ const APP_ID = "22452"
 const SIGNATURE = "xxxxxxxxx"
 
 func main() {
-	s := service.NewSMS(APP_ID,SIGNATURE)
+	s := service.NewSMS(APP_ID, SIGNATURE)
 	s.AddTo("13027232773")
 	s.AddContent("content")
 	s.AddTag("1")

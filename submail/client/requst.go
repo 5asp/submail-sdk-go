@@ -1,10 +1,23 @@
 package client
 
-import "net/http"
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
+)
 
-func (c *Client) sendRequest(req *http.Request, v interface{}) error {
-	req.Header.Set("Accept", "application/json; charset=utf-8")
-	return nil
+func (c *Client) sendRequest(url,s string) string {
+	fmt.Println(url)
+	resp, err := http.Post(url,
+		"application/x-www-form-urlencoded",
+		strings.NewReader(s))
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	return string(body)
 }
 
 func (c *Client) xsendRequest(req *http.Request, v interface{}) error {

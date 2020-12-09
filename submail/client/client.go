@@ -8,14 +8,13 @@ import (
 	"time"
 )
 
-const BaseURLv1 = "https://api.mysubmail.com"
+//const BaseURLv1 = "https://api.mysubmail.com"
 
 type Client struct {
 	BaseURL    string
 	apiKey     string
 	appId      string
 	HTTPClient *http.Client
-	Data       interface{}
 	param      string
 }
 
@@ -23,9 +22,9 @@ type Client struct {
 *	获取配置
 **/
 
-func NewClient(appId, apiKey string) *Client {
+func NewClient(appId, apiKey, APIUrl string) *Client {
 	return &Client{
-		BaseURL: BaseURLv1,
+		BaseURL: APIUrl,
 		apiKey:  apiKey,
 		appId:   appId,
 		HTTPClient: &http.Client{
@@ -41,25 +40,27 @@ func NewClient(appId, apiKey string) *Client {
  */
 
 func (c *Client) Do(data map[string]string) {
-	param := sortMap(data)
+	param := make(map[string]string)
+	data["appkey"] = c.apiKey
+	param = sortMap(data)
 	paramStr := httpBuildQuery(param)
 	var sign signer.Signer
-	var signStr string
 	switch data["sign_type"] {
 	case "md5":
 		sign = new(signer.Md5Signer)
-		signStr = sign.Create(paramStr)
+		data["signature"] = sign.Create(paramStr)
 	case "sha1":
 		sign = new(signer.Sha1Signer)
-		signStr = sign.Create(paramStr)
+		data["signature"] = sign.Create(paramStr)
 	case "normal":
-		signStr = param["signature"]
+		data["signature"] = param["signature"]
 	default:
-		fmt.Println("1")
 		sign = new(signer.Sha256Signer)
-		signStr = sign.Create(paramStr)
+		data["signature"] = sign.Create(paramStr)
 	}
-	fmt.Println(signStr)
+	data["appid"] = c.appId
+	delete(data, "appkey")
+	fmt.Println(c.sendRequest(c.BaseURL,httpBuildQuery(data)))
 }
 
 func httpBuildQuery(m map[string]string) string {
