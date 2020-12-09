@@ -29,6 +29,7 @@ type SMS struct {
 	Multi       string
 	Client      *client.Client
 }
+
 const APIGateway = "https://api.mysubmail.com/"
 
 func (this *SMS) AddTo(to string) *SMS {
@@ -39,37 +40,31 @@ func (this *SMS) AddTo(to string) *SMS {
 func (this *SMS) AddContent(content string) *SMS {
 	this.Content = content
 	return this
-
 }
 
 func (this *SMS) AddTag(tag string) *SMS {
 	this.Tag = tag
 	return this
-
 }
 
 func (this *SMS) AddSignVersion(sign_version string) *SMS {
 	this.SignVersion = sign_version
 	return this
-
 }
 
 func (this *SMS) AddSignType(sign_type string) *SMS {
 	this.SignType = sign_type
 	return this
-
 }
 
 func (this *SMS) AddVars(vars string) *SMS {
 	this.Vars = vars
 	return this
-
 }
 
 func (this *SMS) AddProject(project string) *SMS {
 	this.Project = project
 	return this
-
 }
 
 func (this *SMS) AddMulti(multi string) *SMS {
@@ -114,5 +109,6 @@ func (this *SMS) Multixsend() {
 
 }
 func NewSMS(APP_ID, SIGNATURE string) *SMS {
-	return &SMS{Client: client.NewClient(APP_ID, SIGNATURE,APIGateway +"")}
+	return &SMS{Client: client.NewClient(APP_ID, SIGNATURE, APIGateway+"message/send")}
 }
+

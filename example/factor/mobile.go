@@ -4,8 +4,6 @@ import (
 	"github.com/t0of/submail-sdk-go/service"
 )
 
-
-
 func main() {
 	APP_ID := "10010"
 	SIGNATURE := "a8b681cde917ca064d63b29381ec58f8"

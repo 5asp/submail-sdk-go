@@ -3,8 +3,10 @@ package client
 import (
 	"fmt"
 	"github.com/t0of/submail-sdk-go/submail/signer"
+	"io/ioutil"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 )
 
@@ -21,7 +23,6 @@ type Client struct {
 /**
 *	获取配置
 **/
-
 func NewClient(appId, apiKey, APIUrl string) *Client {
 	return &Client{
 		BaseURL: APIUrl,
@@ -38,7 +39,6 @@ func NewClient(appId, apiKey, APIUrl string) *Client {
 *	再拼接字符串
 *	再发动请求
  */
-
 func (c *Client) Do(data map[string]string) {
 	param := make(map[string]string)
 	data["appkey"] = c.apiKey
@@ -53,14 +53,30 @@ func (c *Client) Do(data map[string]string) {
 		sign = new(signer.Sha1Signer)
 		data["signature"] = sign.Create(paramStr)
 	case "normal":
-		data["signature"] = param["signature"]
+		data["signature"] = c.apiKey
 	default:
 		sign = new(signer.Sha256Signer)
 		data["signature"] = sign.Create(paramStr)
 	}
 	data["appid"] = c.appId
 	delete(data, "appkey")
-	fmt.Println(c.sendRequest(c.BaseURL,httpBuildQuery(data)))
+	fmt.Println(data)
+	fmt.Println(c.sendRequest(c.BaseURL, httpBuildQuery(data)))
+}
+
+/**
+*	发送请求
+ */
+func (c *Client) sendRequest(url, s string) string {
+	resp, err := http.Post(url,
+		"application/x-www-form-urlencoded",
+		strings.NewReader(s))
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	return string(body)
 }
 
 func httpBuildQuery(m map[string]string) string {

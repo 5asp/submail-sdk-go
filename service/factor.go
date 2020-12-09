@@ -7,17 +7,17 @@ import (
 )
 
 type Factor struct {
-	Name      string
-	IdNo    string
-	Mobile    string
-	Client    *client.Client
+	Name   string
+	IdNo   string
+	Mobile string
+	Client *client.Client
 }
 
 const FactorGateway = "https://tpa.mysubmail.com/"
 
-func (this *Factor)AddIdNo(idNo string) *Factor {
+func (this *Factor) AddIdNo(idNo string) *Factor {
 	this.IdNo = idNo
-	return	this
+	return this
 }
 func (this *Factor) AddName(name string) *Factor {
 	this.Name = name
@@ -29,16 +29,16 @@ func (this *Factor) AddMobile(mobile string) *Factor {
 }
 
 func NewFactorDetail3(APP_ID, SIGNATURE string) *Factor {
-	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE,FactorGateway + "factor/detail3")}
+	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE, FactorGateway+"factor/detail3")}
 }
 func NewFactorSimple3(APP_ID, SIGNATURE string) *Factor {
-	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE,FactorGateway + "factor/simple3")}
+	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE, FactorGateway+"factor/simple3")}
 }
 func NewFactorIdCard(APP_ID, SIGNATURE string) *Factor {
-	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE,FactorGateway + "factor/idcard")}
+	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE, FactorGateway+"factor/idcard")}
 }
 func NewFactorMobile(APP_ID, SIGNATURE string) *Factor {
-	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE,FactorGateway + "factor/mobile")}
+	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE, FactorGateway+"factor/mobile")}
 }
 
 func (this *Factor) Send() {
@@ -52,6 +52,6 @@ func (this *Factor) Send() {
 	if this.Mobile != "" {
 		data["mobile"] = this.Mobile
 	}
-	data["timestamp"] = strconv.FormatInt(time.Now().Unix(),10)
+	data["timestamp"] = strconv.FormatInt(time.Now().Unix(), 10)
 	this.Client.Do(data)
 }
