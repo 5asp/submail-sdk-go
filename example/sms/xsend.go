@@ -11,8 +11,9 @@ func main() {
 	const SIGNATURE = "6dba41491c023a4960a4c0c132050255"
 	s := service.NewSMS(APP_ID, SIGNATURE)
 	s.AddTo("13027232773")
-	s.AddContent("【大金门】验证码@var(code),当天使用有效。")
-	s.
+	s.AddProject("DrP9S3")
+	s.AddVars("code","100")
+	s.AddVars("msg","10000")
 	//s.AddTag("1")
 	s.Xsend()
 	//fmt.Println(s)

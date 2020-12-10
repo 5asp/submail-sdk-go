@@ -13,7 +13,6 @@ import (
 //const BaseURLv1 = "https://api.mysubmail.com"
 
 type Client struct {
-	BaseURL    string
 	apiKey     string
 	appId      string
 	HTTPClient *http.Client
@@ -23,9 +22,8 @@ type Client struct {
 /**
 *	获取配置
 **/
-func NewClient(appId, apiKey, APIUrl string) *Client {
+func NewClient(appId, apiKey string) *Client {
 	return &Client{
-		BaseURL: APIUrl,
 		apiKey:  apiKey,
 		appId:   appId,
 		HTTPClient: &http.Client{
@@ -39,7 +37,7 @@ func NewClient(appId, apiKey, APIUrl string) *Client {
 *	再拼接字符串
 *	再发动请求
  */
-func (c *Client) Do(data map[string]string) {
+func (c *Client) Do(Gateway string,data map[string]string) {
 	param := make(map[string]string)
 	data["appkey"] = c.apiKey
 	param = sortMap(data)
@@ -61,7 +59,7 @@ func (c *Client) Do(data map[string]string) {
 	data["appid"] = c.appId
 	delete(data, "appkey")
 	fmt.Println(data)
-	fmt.Println(c.sendRequest(c.BaseURL, httpBuildQuery(data)))
+	fmt.Println(c.sendRequest(Gateway, httpBuildQuery(data)))
 }
 
 /**

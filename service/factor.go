@@ -10,6 +10,7 @@ type Factor struct {
 	Name   string
 	IdNo   string
 	Mobile string
+	SendURL	string
 	Client *client.Client
 }
 
@@ -29,16 +30,16 @@ func (this *Factor) AddMobile(mobile string) *Factor {
 }
 
 func NewFactorDetail3(APP_ID, SIGNATURE string) *Factor {
-	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE, FactorGateway+"factor/detail3")}
+	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE),SendURL:FactorGateway+"factor/detail3"}
 }
 func NewFactorSimple3(APP_ID, SIGNATURE string) *Factor {
-	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE, FactorGateway+"factor/simple3")}
+	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE),SendURL:FactorGateway+"factor/simple3"}
 }
 func NewFactorIdCard(APP_ID, SIGNATURE string) *Factor {
-	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE, FactorGateway+"factor/idcard")}
+	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE),SendURL:FactorGateway+"factor/idcard"}
 }
 func NewFactorMobile(APP_ID, SIGNATURE string) *Factor {
-	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE, FactorGateway+"factor/mobile")}
+	return &Factor{Client: client.NewClient(APP_ID, SIGNATURE),SendURL:FactorGateway+"factor/mobile"}
 }
 
 func (this *Factor) Send() {
@@ -53,5 +54,5 @@ func (this *Factor) Send() {
 		data["mobile"] = this.Mobile
 	}
 	data["timestamp"] = strconv.FormatInt(time.Now().Unix(), 10)
-	this.Client.Do(data)
+	this.Client.Do(this.SendURL,data)
 }
